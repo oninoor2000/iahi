@@ -19,6 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { formatMembershipValidityLine } from '@/lib/membership-display';
 
 type Row = {
   id: string;
@@ -27,6 +28,7 @@ type Row = {
   profession: string | null;
   membership_status: MembershipStatus;
   member_number: string | null;
+  membership_expires_at: string | null;
 };
 
 export function AdminMembersTable() {
@@ -63,12 +65,28 @@ export function AdminMembersTable() {
 
   async function setStatus(id: string, status: MembershipStatus) {
     const supabase = createBrowserSupabaseClient();
-    const { error } = await supabase.from('profiles').update({ membership_status: status }).eq('id', id);
+    const { data, error } = await supabase
+      .from('profiles')
+      .update({ membership_status: status })
+      .eq('id', id)
+      .select('membership_status, member_number, membership_expires_at')
+      .single();
     if (error) {
       alert(error.message);
       return;
     }
-    setRows((prev) => prev.map((r) => (r.id === id ? { ...r, membership_status: status } : r)));
+    setRows((prev) =>
+      prev.map((r) =>
+        r.id === id
+          ? {
+              ...r,
+              membership_status: data.membership_status,
+              member_number: data.member_number,
+              membership_expires_at: data.membership_expires_at,
+            }
+          : r,
+      ),
+    );
   }
 
   if (loading) return <p className="text-sm text-muted-foreground">Memuat data anggota…</p>;
@@ -104,6 +122,7 @@ export function AdminMembersTable() {
               <TableHead>Institusi</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>No.</TableHead>
+              <TableHead className="max-w-[200px]">Masa berlaku</TableHead>
               <TableHead className="text-right">Aksi</TableHead>
             </TableRow>
           </TableHeader>
@@ -116,6 +135,11 @@ export function AdminMembersTable() {
                   <Badge variant="secondary">{r.membership_status}</Badge>
                 </TableCell>
                 <TableCell className="font-mono text-xs">{r.member_number ?? '—'}</TableCell>
+                <TableCell className="text-xs text-muted-foreground">
+                  {r.membership_expires_at
+                    ? formatMembershipValidityLine(r.membership_expires_at)
+                    : '—'}
+                </TableCell>
                 <TableCell className="text-right">
                   <div className="flex flex-wrap justify-end gap-2">
                     {r.membership_status === 'pending' ? (

@@ -5,6 +5,7 @@ import { jsPDF } from 'jspdf';
 import { Button } from '@/components/ui/button';
 import type { MembershipStatus } from '@/lib/database.types';
 import { getPublicSiteOrigin } from '@/lib/site';
+import { formatMembershipValidityLine } from '@/lib/membership-display';
 
 type CardProfile = {
   full_name: string;
@@ -12,6 +13,7 @@ type CardProfile = {
   institution: string | null;
   profession: string | null;
   membership_status: MembershipStatus;
+  membership_expires_at: string | null;
 };
 
 export function MemberCardDownload({ profile }: { profile: CardProfile }) {
@@ -74,7 +76,7 @@ export function MemberCardDownload({ profile }: { profile: CardProfile }) {
           </div>
         </div>
         <p className="mt-4 text-[10px] leading-snug text-muted-foreground">
-          Berlaku sampai 1 tahun sejak keanggotaan disetujui
+          {formatMembershipValidityLine(profile.membership_expires_at)}
         </p>
       </div>
       <div className="flex flex-wrap gap-2">

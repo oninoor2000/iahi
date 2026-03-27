@@ -12,7 +12,9 @@
     "astro": "astro",
     "db:migrate-seed": "node scripts/migrate-and-seed-admin.mjs",
     "db:migrate-only": "node scripts/migrate-and-seed-admin.mjs --no-seed",
-    "db:seed-admin": "node scripts/migrate-and-seed-admin.mjs --seed-only"
+    "db:seed-admin": "node scripts/migrate-and-seed-admin.mjs --seed-only",
+    "db:apply-membership-expiry": "node scripts/apply-sql.mjs supabase/migrations/20260329120000_membership_expires_at.sql",
+    "db:apply-membership-signup": "node scripts/apply-sql.mjs supabase/migrations/20260329130000_membership_expires_at_signup.sql"
   },
   "dependencies": {
     "@astrojs/react": "^5.0.2",

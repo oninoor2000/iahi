@@ -33,6 +33,7 @@ export interface Database {
           institution: string | null;
           member_number: string | null;
           membership_status: MembershipStatus;
+          membership_expires_at: string | null;
           membership_category: MembershipCategory | null;
           branch_id: string | null;
           avatar_url: string | null;
@@ -48,6 +49,7 @@ export interface Database {
           institution?: string | null;
           member_number?: string | null;
           membership_status?: MembershipStatus;
+          membership_expires_at?: string | null;
           membership_category?: MembershipCategory | null;
           branch_id?: string | null;
           avatar_url?: string | null;

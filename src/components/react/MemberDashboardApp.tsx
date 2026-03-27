@@ -10,6 +10,7 @@ import { createBrowserSupabaseClient } from '@/lib/supabase/browser';
 import { profileUpdateSchema, type ProfileUpdateInput } from '@/lib/validators';
 import type { MembershipStatus } from '@/lib/database.types';
 import { MemberCardDownload } from '@/components/react/MemberCardDownload';
+import { formatMembershipValidityLine } from '@/lib/membership-display';
 
 const statusLabel: Record<MembershipStatus, string> = {
   pending: 'Menunggu persetujuan',
@@ -29,6 +30,7 @@ export function MemberDashboardApp() {
     avatar_url: string | null;
     membership_status: MembershipStatus;
     member_number: string | null;
+    membership_expires_at: string | null;
   } | null>(null);
   const [message, setMessage] = useState<string | null>(null);
 
@@ -125,6 +127,11 @@ export function MemberDashboardApp() {
           {profileState.member_number ? (
             <span className="text-sm text-muted-foreground">
               No. anggota: {profileState.member_number}
+            </span>
+          ) : null}
+          {profileState.membership_expires_at ? (
+            <span className="text-sm text-muted-foreground">
+              {formatMembershipValidityLine(profileState.membership_expires_at)}
             </span>
           ) : null}
         </div>
