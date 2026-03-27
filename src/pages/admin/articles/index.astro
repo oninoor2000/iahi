@@ -1,0 +1,22 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { AdminArticlesList } from '@/components/react/AdminArticlesList';
+
+const { user, isAdmin } = Astro.locals;
+if (!user) {
+  return Astro.redirect('/login');
+}
+if (!isAdmin) {
+  return Astro.redirect('/dashboard');
+}
+---
+
+<BaseLayout title="Admin — Artikel | IAHI" description="Daftar artikel IAHI." noIndex>
+  <section class="mx-auto max-w-6xl px-4 py-12 sm:px-6">
+    <a href="/admin" class="text-sm text-primary">← Kembali</a>
+    <h1 class="mt-4 text-3xl font-semibold text-primary">Artikel</h1>
+    <div class="mt-8">
+      <AdminArticlesList client:load />
+    </div>
+  </section>
+</BaseLayout>

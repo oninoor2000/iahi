@@ -1,0 +1,23 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { AdminArticleEditor } from '@/components/react/AdminArticleEditor';
+
+const { user, isAdmin } = Astro.locals;
+if (!user) {
+  return Astro.redirect('/login');
+}
+if (!isAdmin) {
+  return Astro.redirect('/dashboard');
+}
+---
+
+<BaseLayout title="Edit artikel | Admin IAHI" description="Editor artikel." noIndex>
+  <section class="mx-auto max-w-4xl px-4 py-12 sm:px-6">
+    <a href="/admin/articles" class="text-sm text-primary">← Daftar artikel</a>
+    <h1 class="mt-4 text-3xl font-semibold text-primary">Edit artikel</h1>
+    <p class="mt-1 text-sm text-muted-foreground">ID artikel diambil dari parameter URL <code class="text-xs">?id=</code>.</p>
+    <div class="mt-8">
+      <AdminArticleEditor client:load />
+    </div>
+  </section>
+</BaseLayout>

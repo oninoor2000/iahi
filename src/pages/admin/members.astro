@@ -1,0 +1,22 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { AdminMembersTable } from '@/components/react/AdminMembersTable';
+
+const { user, isAdmin } = Astro.locals;
+if (!user) {
+  return Astro.redirect('/login');
+}
+if (!isAdmin) {
+  return Astro.redirect('/dashboard');
+}
+---
+
+<BaseLayout title="Admin — Anggota | IAHI" description="Manajemen anggota IAHI." noIndex>
+  <section class="mx-auto max-w-6xl px-4 py-12 sm:px-6">
+    <a href="/admin" class="text-sm text-primary">← Kembali</a>
+    <h1 class="mt-4 text-3xl font-semibold text-primary">Anggota</h1>
+    <div class="mt-8">
+      <AdminMembersTable client:load />
+    </div>
+  </section>
+</BaseLayout>

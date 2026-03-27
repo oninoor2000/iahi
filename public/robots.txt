@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /dashboard
+Disallow: /login
+Disallow: /daftar
+Disallow: /api/
+
+Sitemap: https://iahi.or.id/sitemap-index.xml

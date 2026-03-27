@@ -1,0 +1,31 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="mt-24 border-t border-border bg-muted/40">
+  <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6">
+    <div class="flex flex-col gap-8 md:flex-row md:justify-between">
+      <div class="max-w-md">
+        <p class="text-sm font-semibold text-primary">IAHI</p>
+        <p class="mt-2 text-sm text-muted-foreground">
+          Indonesian Association of Health Informatics — memajukan disiplin informatika kesehatan di
+          Indonesia melalui komunitas, edukasi, dan kolaborasi berbasis bukti.
+        </p>
+      </div>
+      <div class="flex gap-10 text-sm text-muted-foreground">
+        <div class="flex flex-col gap-2">
+          <span class="font-medium text-foreground">Jelajah</span>
+          <a href="/tentang" class="hover:text-foreground">Tentang</a>
+          <a href="/artikel" class="hover:text-foreground">Artikel</a>
+          <a href="/fiki" class="hover:text-foreground">FIKI</a>
+        </div>
+        <div class="flex flex-col gap-2">
+          <span class="font-medium text-foreground">Anggota</span>
+          <a href="/login" class="hover:text-foreground">Masuk</a>
+          <a href="/daftar" class="hover:text-foreground">Registrasi</a>
+        </div>
+      </div>
+    </div>
+    <p class="mt-10 text-xs text-muted-foreground">© {year} IAHI. Seluruh hak cipta dilindungi.</p>
+  </div>
+</footer>

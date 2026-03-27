@@ -1,0 +1,38 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+const { user, isAdmin } = Astro.locals;
+if (!user) {
+  return Astro.redirect('/login');
+}
+if (!isAdmin) {
+  return Astro.redirect('/dashboard');
+}
+---
+
+<BaseLayout title="Admin | IAHI" description="Panel pengurus IAHI." noIndex>
+  <section class="mx-auto max-w-6xl px-4 py-12 sm:px-6">
+    <h1 class="text-3xl font-semibold text-primary">Panel admin</h1>
+    <p class="mt-2 text-sm text-muted-foreground">Kelola anggota dan publikasi artikel.</p>
+    <ul class="mt-8 grid gap-4 sm:grid-cols-2">
+      <li>
+        <a
+          href="/admin/members"
+          class="block rounded-lg border border-border bg-card p-6 shadow-sm transition-shadow hover:shadow-md"
+        >
+          <h2 class="font-semibold text-foreground">Anggota</h2>
+          <p class="mt-2 text-sm text-muted-foreground">Setujui pendaftaran dan status keanggotaan.</p>
+        </a>
+      </li>
+      <li>
+        <a
+          href="/admin/articles"
+          class="block rounded-lg border border-border bg-card p-6 shadow-sm transition-shadow hover:shadow-md"
+        >
+          <h2 class="font-semibold text-foreground">Artikel</h2>
+          <p class="mt-2 text-sm text-muted-foreground">Buat dan terbitkan konten ke situs publik.</p>
+        </a>
+      </li>
+    </ul>
+  </section>
+</BaseLayout>

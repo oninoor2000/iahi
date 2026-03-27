@@ -1,0 +1,21 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { RegisterForm } from '@/components/react/RegisterForm';
+---
+
+<BaseLayout
+  title="Registrasi anggota | IAHI"
+  description="Daftar sebagai anggota Indonesian Association of Health Informatics."
+  noIndex
+>
+  <section class="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+    <h1 class="text-3xl font-semibold tracking-tight text-primary">Registrasi anggota</h1>
+    <p class="mt-2 max-w-2xl text-sm text-muted-foreground">
+      Lengkapi data profesional Anda. Setelah verifikasi email, tim pengurus akan meninjau dan
+      mengaktifkan keanggotaan.
+    </p>
+    <div class="mt-8">
+      <RegisterForm client:load />
+    </div>
+  </section>
+</BaseLayout>

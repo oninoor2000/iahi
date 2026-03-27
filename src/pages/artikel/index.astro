@@ -1,0 +1,83 @@
+---
+export const prerender = true;
+
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { createBuildTimeSupabaseClient } from '@/lib/supabase/build';
+
+const LIST_LIMIT = 100;
+
+let articles: Array<{
+  slug: string;
+  title: string;
+  excerpt: string | null;
+  published_at: string | null;
+  category: string | null;
+}> = [];
+
+try {
+  const supabase = createBuildTimeSupabaseClient();
+  const { data } = await supabase
+    .from('articles')
+    .select('slug, title, excerpt, published_at, category')
+    .eq('status', 'published')
+    .order('published_at', { ascending: false })
+    .limit(LIST_LIMIT);
+  articles = data ?? [];
+} catch {
+  articles = [];
+}
+
+const listLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: 'Artikel IAHI',
+  description: 'Publikasi dan berita informatika kesehatan dari IAHI.',
+  url: new URL('/artikel', Astro.site).href,
+};
+---
+
+<BaseLayout
+  title="Artikel | IAHI"
+  description="Berita, opini, dan publikasi ilmiah informatika kesehatan dari komunitas IAHI."
+  jsonLd={listLd}
+>
+  <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+    <h1 class="text-4xl font-semibold tracking-tight text-primary">Artikel</h1>
+    <p class="mt-3 max-w-2xl text-muted-foreground">
+      Publikasi dari anggota dan pengurus IAHI. Daftar di bawah dihasilkan pada waktu build; setelah
+      artikel baru diterbitkan, jalankan ulang deployment atau hook rebuild.
+    </p>
+
+    {articles.length === 0 ? (
+      <p class="mt-10 text-sm text-muted-foreground">
+        Belum ada artikel. Setelah integrasi Supabase, entri yang berstatus terpublikasikan akan
+        muncul di sini.
+      </p>
+    ) : (
+      <ul class="mt-10 divide-y divide-border border-t border-border">
+        {articles.map((a) => (
+          <li class="py-8">
+            <a href={`/artikel/${a.slug}`} class="group block">
+              <div class="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                {a.published_at ? (
+                  <time datetime={a.published_at}>
+                    {new Date(a.published_at).toLocaleDateString('id-ID', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                    })}
+                  </time>
+                ) : null}
+                {a.category ? <span>{a.category}</span> : null}
+              </div>
+              <h2 class="mt-2 text-xl font-semibold text-foreground group-hover:text-primary">
+                {a.title}
+              </h2>
+              {a.excerpt ? <p class="mt-2 text-sm text-muted-foreground">{a.excerpt}</p> : null}
+            </a>
+          </li>
+        ))}
+      </ul>
+    )}
+  </div>
+</BaseLayout>

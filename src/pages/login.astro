@@ -1,0 +1,28 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { LoginForm } from '@/components/react/LoginForm';
+
+const { user } = Astro.locals;
+if (user) {
+  return Astro.redirect('/dashboard');
+}
+---
+
+<BaseLayout
+  title="Masuk | IAHI"
+  description="Masuk ke dashboard anggota IAHI."
+  noIndex
+>
+  <section class="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+    <h1 class="text-3xl font-semibold tracking-tight text-primary">Masuk</h1>
+    <p class="mt-2 max-w-xl text-sm text-muted-foreground">
+      Gunakan email dan kata sandi yang terdaftar. Keanggotaan aktif memerlukan persetujuan admin.
+    </p>
+    <div class="mt-8">
+      <LoginForm client:load />
+    </div>
+    <p class="mt-6 text-sm text-muted-foreground">
+      Belum punya akun? <a href="/daftar" class="text-primary underline">Daftar di sini</a>.
+    </p>
+  </section>
+</BaseLayout>

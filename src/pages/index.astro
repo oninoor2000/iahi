@@ -1,17 +1,102 @@
 ---
+export const prerender = true;
 
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { createBuildTimeSupabaseClient } from '@/lib/supabase/build';
+
+const orgJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Indonesian Association of Health Informatics (IAHI)',
+  url: Astro.site?.href ?? 'https://iahi.or.id/',
+  logo: new URL('/favicon.svg', Astro.site ?? 'https://iahi.or.id').href,
+  foundingDate: '2005',
+  description:
+    'Organisasi profesi informatika kesehatan Indonesia: komunitas, penelitian, dan kolaborasi nasional.',
+};
+
+let featured: Array<{ slug: string; title: string; excerpt: string | null; published_at: string | null }> = [];
+
+try {
+  const supabase = createBuildTimeSupabaseClient();
+  const { data } = await supabase
+    .from('articles')
+    .select('slug, title, excerpt, published_at')
+    .eq('status', 'published')
+    .order('published_at', { ascending: false })
+    .limit(3);
+  featured = data ?? [];
+} catch {
+  featured = [];
+}
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout
+  title="IAHI | Indonesian Association of Health Informatics"
+  description="Organisasi profesi informatika kesehatan Indonesia. Visi, komunitas, dan publikasi ilmiah sejak 2005."
+  jsonLd={orgJsonLd}
+>
+  <section class="border-b border-border bg-gradient-to-b from-accent/25 to-background">
+    <div class="mx-auto flex max-w-6xl flex-col gap-10 px-4 py-20 sm:px-6 lg:flex-row lg:items-end lg:justify-between">
+      <div class="max-w-2xl">
+        <p class="text-sm font-medium uppercase tracking-wider text-primary">Sejak 2005</p>
+        <h1 class="mt-3 text-4xl font-semibold tracking-tight text-primary sm:text-5xl">
+          Memimpin informatika kesehatan untuk Indonesia
+        </h1>
+        <p class="mt-5 text-lg text-muted-foreground">
+          IAHI menghubungkan klinisi, akademisi, dan teknolog dalam satu wadah profesional yang
+          berlandaskan bukti dan etika.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-4">
+          <a
+            href="/daftar"
+            class="inline-flex rounded-md bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground shadow-sm transition-opacity hover:opacity-90"
+          >
+            Jadi anggota
+          </a>
+          <a
+            href="/artikel"
+            class="inline-flex rounded-md border border-border bg-card px-5 py-2.5 text-sm font-medium text-foreground shadow-sm"
+          >
+            Baca artikel
+          </a>
+        </div>
+      </div>
+      <div class="max-w-sm rounded-lg border border-border bg-card/80 p-6 shadow-sm backdrop-blur-sm">
+        <p class="text-sm font-medium text-foreground">FIKI & temu ilmiah</p>
+        <p class="mt-2 text-sm text-muted-foreground">
+          Forum Informatika Kesehatan Indonesia menjadi ruang berbagi bukti, kebijakan, dan inovasi
+          teknologi kesehatan.
+        </p>
+        <a href="/fiki" class="mt-4 inline-block text-sm font-medium text-primary">Selengkapnya</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+    <div class="flex items-end justify-between gap-4">
+      <h2 class="text-2xl font-semibold text-primary">Artikel terbaru</h2>
+      <a href="/artikel" class="text-sm font-medium text-primary">Lihat semua</a>
+    </div>
+    {featured.length === 0 ? (
+      <p class="mt-6 text-sm text-muted-foreground">
+        Belum ada artikel terpublikasikan. Hubungkan proyek Supabase dan terbitkan konten dari
+        dashboard admin.
+      </p>
+    ) : (
+      <ul class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {featured.map((a) => (
+          <li>
+            <a
+              href={`/artikel/${a.slug}`}
+              class="group block h-full rounded-lg border border-border bg-card p-5 shadow-sm transition-shadow hover:shadow-md"
+            >
+              <h3 class="font-semibold text-foreground group-hover:text-primary">{a.title}</h3>
+              {a.excerpt ? <p class="mt-2 line-clamp-3 text-sm text-muted-foreground">{a.excerpt}</p> : null}
+            </a>
+          </li>
+        ))}
+      </ul>
+    )}
+  </section>
+</BaseLayout>

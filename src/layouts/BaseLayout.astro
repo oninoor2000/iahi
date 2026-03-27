@@ -1,0 +1,71 @@
+---
+import '@/styles/global.css';
+import SiteHeader from '@/components/SiteHeader.astro';
+import SiteFooter from '@/components/SiteFooter.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  canonicalPath?: string;
+  ogImage?: string;
+  ogType?: 'website' | 'article';
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+  noIndex?: boolean;
+}
+
+const {
+  title,
+  description = 'Indonesian Association of Health Informatics — profesi, penelitian, dan komunitas informatika kesehatan sejak 2005.',
+  canonicalPath = Astro.url.pathname,
+  ogImage,
+  ogType = 'website',
+  jsonLd,
+  noIndex = false,
+} = Astro.props;
+
+const site = Astro.site?.origin ?? 'https://iahi.or.id';
+const canonical = new URL(canonicalPath, site).toString();
+const ogUrl = ogImage ? new URL(ogImage, site).toString() : `${site}/favicon.svg`;
+const jsonScripts = jsonLd
+  ? Array.isArray(jsonLd)
+    ? jsonLd
+    : [jsonLd]
+  : [];
+---
+
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    {noIndex ? <meta name="robots" content="noindex, nofollow" /> : null}
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:image" content={ogUrl} />
+    <meta property="og:locale" content="id_ID" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogUrl} />
+
+    {jsonScripts.map((schema) => (
+      <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+    ))}
+  </head>
+  <body class="flex min-h-screen flex-col antialiased bg-background text-foreground">
+    <SiteHeader />
+    <main class="flex-1">
+      <slot />
+    </main>
+    <SiteFooter />
+  </body>
+</html>

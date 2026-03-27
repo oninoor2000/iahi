@@ -6,13 +6,26 @@ import { fileURLToPath } from 'node:url';
 import react from '@astrojs/react';
 import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
+import vercel from '@astrojs/vercel';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // https://astro.build/config
 export default defineConfig({
   site: 'https://iahi.or.id',
-  integrations: [react(), sitemap()],
+  output: 'server',
+  adapter: vercel(),
+  integrations: [
+    react(),
+    sitemap({
+      filter: (page) =>
+        !page.includes('/admin') &&
+        !page.includes('/dashboard') &&
+        !page.includes('/login') &&
+        !page.includes('/daftar') &&
+        !page.includes('/api/'),
+    }),
+  ],
 
   vite: {
     plugins: [tailwindcss()],

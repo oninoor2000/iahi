@@ -1,0 +1,22 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { MemberDashboardApp } from '@/components/react/MemberDashboardApp';
+
+const { user } = Astro.locals;
+if (!user) {
+  return Astro.redirect('/login');
+}
+---
+
+<BaseLayout
+  title="Dashboard anggota | IAHI"
+  description="Kelola profil dan kartu anggota digital IAHI."
+  noIndex
+>
+  <section class="mx-auto max-w-6xl px-4 py-12 sm:px-6">
+    <h1 class="text-3xl font-semibold tracking-tight text-primary">Dashboard anggota</h1>
+    <div class="mt-8">
+      <MemberDashboardApp client:load />
+    </div>
+  </section>
+</BaseLayout>

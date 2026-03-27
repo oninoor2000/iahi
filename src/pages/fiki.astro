@@ -1,0 +1,35 @@
+---
+export const prerender = true;
+
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Beranda', item: new URL('/', Astro.site).href },
+    { '@type': 'ListItem', position: 2, name: 'FIKI', item: new URL('/fiki', Astro.site).href },
+  ],
+};
+---
+
+<BaseLayout
+  title="FIKI | Forum Informatika Kesehatan Indonesia"
+  description="Forum Informatika Kesehatan Indonesia — dokumentasi kegiatan dan partisipasi IAHI."
+  jsonLd={breadcrumbLd}
+>
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6">
+    <h1 class="text-4xl font-semibold tracking-tight text-primary">Forum Informatika Kesehatan Indonesia (FIKI)</h1>
+    <p class="mt-6 text-muted-foreground leading-relaxed">
+      FIKI merupakan forum ilmiah dan kebijakan yang mempertemukan pakar informatika kesehatan,
+      penyedia layanan, regulator, dan akademisi. Halaman ini dapat dilengkapi dengan dokumentasi
+      foto acara, makalah utama, dan ringkasan kebijakan dari setiap penyelenggaraan.
+    </p>
+    <div class="mt-10 rounded-lg border border-border bg-muted/30 p-6 text-sm text-muted-foreground">
+      <p>
+        Gantilah blok ini dengan konten kurasi editorial (misalnya embed galeri atau tautan ke
+        prosiding) sesuai materi resmi organisasi Anda.
+      </p>
+    </div>
+  </article>
+</BaseLayout>
