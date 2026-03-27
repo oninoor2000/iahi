@@ -52,8 +52,10 @@ export function MemberCardDownload({ profile }: { profile: CardProfile }) {
         style={{ fontFamily: 'system-ui, sans-serif' }}
       >
         <div className="flex items-start justify-between gap-4">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-wide text-primary">IAHI</p>
+          <div className="min-w-0 flex-1 pr-1">
+            <p className="text-[10px] font-semibold leading-snug text-primary">
+              Kartu Anggota Perhimpunan Informatika Kesehatan Indonesia
+            </p>
             <p className="mt-1 text-lg font-semibold text-foreground">{profile.full_name}</p>
             <p className="text-sm text-muted-foreground">{profile.profession ?? '—'}</p>
             <p className="mt-2 text-xs text-muted-foreground">{profile.institution ?? '—'}</p>
@@ -71,7 +73,9 @@ export function MemberCardDownload({ profile }: { profile: CardProfile }) {
             )}
           </div>
         </div>
-        <p className="mt-4 break-all text-[10px] text-muted-foreground">{qrUrl}</p>
+        <p className="mt-4 text-[10px] leading-snug text-muted-foreground">
+          Berlaku sampai 1 tahun sejak keanggotaan disetujui
+        </p>
       </div>
       <div className="flex flex-wrap gap-2">
         <Button type="button" size="sm" disabled={!canDownload} onClick={() => void downloadPng()}>
