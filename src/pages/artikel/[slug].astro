@@ -3,6 +3,7 @@ export const prerender = true;
 
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { createBuildTimeSupabaseClient } from '@/lib/supabase/build';
+import { PUBLIC_SITE_FALLBACK } from '@/lib/site';
 
 export async function getStaticPaths() {
   try {
@@ -42,7 +43,7 @@ const { data: authorProf } = await supabase
 const title = article.meta_title ?? article.title;
 const description =
   article.meta_description ?? article.excerpt ?? `Artikel: ${article.title} — IAHI`;
-const siteOrigin = Astro.site?.origin ?? 'https://iahi.or.id';
+const siteOrigin = Astro.site?.origin ?? PUBLIC_SITE_FALLBACK;
 const canonicalPath = `/artikel/${article.slug}`;
 const ogImage = article.cover_image_url
   ? article.cover_image_url.startsWith('http')

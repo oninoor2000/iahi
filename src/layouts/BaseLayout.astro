@@ -2,6 +2,7 @@
 import '@/styles/global.css';
 import SiteHeader from '@/components/SiteHeader.astro';
 import SiteFooter from '@/components/SiteFooter.astro';
+import { PUBLIC_SITE_FALLBACK } from '@/lib/site';
 
 interface Props {
   title: string;
@@ -23,7 +24,7 @@ const {
   noIndex = false,
 } = Astro.props;
 
-const site = Astro.site?.origin ?? 'https://iahi.or.id';
+const site = Astro.site?.origin ?? PUBLIC_SITE_FALLBACK;
 const canonical = new URL(canonicalPath, site).toString();
 const ogUrl = ogImage ? new URL(ogImage, site).toString() : `${site}/favicon.svg`;
 const jsonScripts = jsonLd

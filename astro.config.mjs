@@ -10,9 +10,11 @@ import vercel from '@astrojs/vercel';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
+const site = (process.env.PUBLIC_SITE_URL || 'https://iahi.vercel.app').replace(/\/+$/, '');
+
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://iahi.or.id',
+  site,
   output: 'server',
   adapter: vercel(),
   integrations: [

@@ -12,6 +12,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { createBrowserSupabaseClient } from '@/lib/supabase/browser';
+import { getPublicSiteOrigin } from '@/lib/site';
 import { registerSchema, type RegisterInput } from '@/lib/validators';
 
 export function RegisterForm() {
@@ -44,7 +45,7 @@ export function RegisterForm() {
           profession: data.profession,
           membership_category: data.membershipCategory,
         },
-        emailRedirectTo: `${window.location.origin}/dashboard`,
+        emailRedirectTo: `${getPublicSiteOrigin()}/dashboard`,
       },
     });
     if (signErr) {

@@ -3,13 +3,14 @@ export const prerender = true;
 
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { createBuildTimeSupabaseClient } from '@/lib/supabase/build';
+import { PUBLIC_SITE_FALLBACK } from '@/lib/site';
 
 const orgJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   name: 'Indonesian Association of Health Informatics (IAHI)',
-  url: Astro.site?.href ?? 'https://iahi.or.id/',
-  logo: new URL('/favicon.svg', Astro.site ?? 'https://iahi.or.id').href,
+  url: Astro.site?.href ?? `${PUBLIC_SITE_FALLBACK}/`,
+  logo: new URL('/favicon.svg', Astro.site ?? PUBLIC_SITE_FALLBACK).href,
   foundingDate: '2005',
   description:
     'Organisasi profesi informatika kesehatan Indonesia: komunitas, penelitian, dan kolaborasi nasional.',

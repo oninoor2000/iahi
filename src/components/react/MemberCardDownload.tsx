@@ -4,6 +4,7 @@ import { toPng } from 'html-to-image';
 import { jsPDF } from 'jspdf';
 import { Button } from '@/components/ui/button';
 import type { MembershipStatus } from '@/lib/database.types';
+import { getPublicSiteOrigin } from '@/lib/site';
 
 type CardProfile = {
   full_name: string;
@@ -13,10 +14,9 @@ type CardProfile = {
   membership_status: MembershipStatus;
 };
 
-const sitePublic = 'https://iahi.or.id';
-
 export function MemberCardDownload({ profile }: { profile: CardProfile }) {
   const ref = useRef<HTMLDivElement>(null);
+  const sitePublic = getPublicSiteOrigin();
   const qrUrl =
     profile.member_number != null
       ? `${sitePublic}/anggota/verify?id=${encodeURIComponent(profile.member_number)}`

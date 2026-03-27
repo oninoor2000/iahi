@@ -6,4 +6,4 @@ Disallow: /login
 Disallow: /daftar
 Disallow: /api/
 
-Sitemap: https://iahi.or.id/sitemap-index.xml
+Sitemap: https://iahi.vercel.app/sitemap-index.xml

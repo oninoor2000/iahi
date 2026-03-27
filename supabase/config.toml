@@ -216,15 +216,17 @@ otp_length = 6
 # Number of seconds before the email OTP expires (defaults to 1 hour).
 otp_expiry = 3600
 
-# Use a production-ready SMTP server
+# Custom SMTP (e.g. Gmail). Uncomment and set GMAIL_* in .env for local `supabase start`.
+# Hosted project: configure the same fields in Dashboard → Authentication → SMTP (not OAuth client secret).
+# Gmail: host smtp.gmail.com, port 587, user = full email, pass = App Password (16 chars), not Gmail API OAuth.
 # [auth.email.smtp]
 # enabled = true
-# host = "smtp.sendgrid.net"
+# host = "smtp.gmail.com"
 # port = 587
-# user = "apikey"
-# pass = "env(SENDGRID_API_KEY)"
-# admin_email = "admin@email.com"
-# sender_name = "Admin"
+# user = "env(GMAIL_SMTP_USER)"
+# pass = "env(GMAIL_SMTP_APP_PASSWORD)"
+# admin_email = "env(GMAIL_SMTP_FROM)"
+# sender_name = "IAHI"
 
 # Uncomment to customize email template
 # [auth.email.template.invite]

@@ -14,6 +14,8 @@ declare namespace App {
 type ImportMetaEnv = Readonly<{
   PUBLIC_SUPABASE_URL: string;
   PUBLIC_SUPABASE_ANON_KEY: string;
+  /** Canonical site URL (no trailing slash); email confirmation & OAuth redirects */
+  PUBLIC_SITE_URL?: string;
   /** Server-only: Vercel/Netlify deploy hook URL (used by /api/trigger-rebuild) */
   REBUILD_HOOK_URL?: string;
   /** Server-only: verify Supabase webhooks or /api/rebuild-hook */
